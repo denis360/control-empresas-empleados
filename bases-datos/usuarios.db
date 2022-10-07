@@ -1,11 +1,11 @@
 0-2204-us
 Prueba01
-prueba-cargo01
-A
-Alto
-Con sueldo
-4234.00
-Contratado
+Algo
+S
+Suspendido
+Sin sueldo
+-
+Suspendido por el igss
 0-2204-em
 1-2204-us
 Prueba01
@@ -25,3 +25,12 @@ Con sueldo
 1234.00
 Contratado
 1-2204-em
+12-2206-us
+Allan
+Desarrollador
+N
+Normal
+Con sueldo
+3100.00
+
+0-2204-em
