@@ -1,6 +1,5 @@
 int filas = 0;
 
-
 int longitud_puntero (string *p) {
   return (*p).length();
 }
@@ -16,8 +15,6 @@ void mostrar_matriz ( string** matriz, int columnas, int tamaño ) {
   }
 }
 
-/* Se le pasa una matriz y este saca el valor mas grande en cada columa y luego a cada columna le añade el valor mas grande - el valor
- * actual(fila,columna) y esos son los espacios totales en espacios quedando asi un formato de tabla*/
 void matriz_tabla ( string** matriz, int columnas, int tamaño ) {
   int mayor = 0;
   filas = tamaño/columnas;

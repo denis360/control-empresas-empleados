@@ -24,8 +24,8 @@ string nombre_planilla;
 string codigo_empresa;
 string linea;
 
-stringstream stime;
 stringstream ss;
+stringstream stime;
 
 #include "funciones.h"
 
@@ -137,20 +137,68 @@ void buscar_empresa (void) {
   }
 }
 
+void abrir_planilla (void) {
+  ifstream planilla_archivo; planilla_archivo.open("./planillas/"+nombre_planilla);
+  if (nombre_planilla == "") return;
+  if (!planilla_archivo.is_open()) return;
+
+  vector_planilla.clear();
+  while (getline(planilla_archivo, linea)) vector_planilla.push_back(linea);
+  planilla_archivo.close();
+
+  matriz_planilla = vector_matriz(vector_planilla, 9);
+  matriz_tabla(matriz_planilla, 9, vector_planilla.size());
+}
+
 void mostrar_planillas (void) {
   string path = "./planillas/";
   int it = 0;
   string nombre;
   string codigo_planilla;
   for ( const auto &elemento : filesystem::directory_iterator(path) ) {
+    string nombre_planilla;
     ss.str("");
     ss << elemento;
-    nombre = ss.str();
-    nombre.erase(remove(nombre.begin(), nombre.end(), '\"'), nombre.end());
-    nombre = nombre.substr(path.length(), nombre.length());
-    cout<<"["<<it+1<<"] -> "<<nombre<<endl;
+    nombre_planilla = ss.str();
+    nombre_planilla.erase(remove(nombre_planilla.begin(), nombre_planilla.end(), '\"'), nombre_planilla.end());
+    nombre = nombre_planilla.substr(path.length(), nombre_planilla.length());
+    codigo_planilla = nombre.substr(0, codigo_empresa.length());
+    if ( codigo_planilla == codigo_empresa ) {
+      cout<<"["<<it+1<<"] -> "<<nombre<<endl;
+      it++;
+    }
   }
   int numero_planilla = 0;
+  it = 0;
+  cout<<"Seleccione (1-): "; cin>>numero_planilla;
+  for ( const auto &elemento : filesystem::directory_iterator(path) ) {
+    string n_planilla;
+    ss.str("");
+    ss << elemento;
+    n_planilla = ss.str();
+    n_planilla.erase(remove(n_planilla.begin(), n_planilla.end(), '\"'), n_planilla.end());
+    nombre = n_planilla.substr(path.length(), n_planilla.length());
+    codigo_planilla = nombre.substr(0, codigo_empresa.length());
+    if ( codigo_planilla == codigo_empresa ) {
+      if ( numero_planilla-1 == it ) {
+        nombre_planilla = nombre;
+        break;
+      }
+      it++;
+    }
+  }
+}
+
+void agregar_usuario (void) {
+
+}
+
+void actualizar_usuario (void) {
+
+}
+
+void generar_reporte (void) {
+
 }
 
 int main () {
@@ -160,6 +208,7 @@ int main () {
   while ( conf ) {
     obtener_empresas();
     obtener_usuarios();
+    abrir_planilla();
 
     int conf_opcion = 0;
     cout<<( codigo_empresa == "" ? "\n  1. Buscar empresa" : "\n  1. Mostrar usuarios emrpesa")<<endl;
@@ -176,6 +225,10 @@ int main () {
     if ( conf_opcion == 2 & codigo_empresa == "") agregar_empresa ();
     if ( conf_opcion == 2 & codigo_empresa != "") cout<<"Generando planilla"<<endl;
     if ( conf_opcion == 3 & codigo_empresa != "") mostrar_planillas();
+    if ( conf_opcion == 4 & codigo_empresa != "") mostrar_matriz(matriz_planilla, 9, vector_planilla.size());
+    if ( conf_opcion == 5 & codigo_empresa != "") agregar_usuario();
+    if ( conf_opcion == 6 & codigo_empresa != "") actualizar_usuario();
+    if ( conf_opcion == 7 & codigo_empresa != "") generar_reporte();
 
   }
 
