@@ -268,7 +268,7 @@ void actualizar_usuario (void) {
   if (vector_usuarios[it+3] == "N") {
     vector_usuarios[it+4] = "Normal";
     vector_usuarios[it+5] = "Con sueldo";
-    vector_usuarios[it+7] = "";
+    vector_usuarios[it+7] = "Normal";
   }
 
   if (vector_usuarios[it+3] == "B") {
@@ -329,7 +329,7 @@ void generar_reporte (void) {
 void crear_planilla (void) {
   string nueva_planilla = "./planillas/";
 
-  nueva_planilla.append(codigo_empresa+"_").append(timestamp()+".db");
+  nueva_planilla.append(codigo_empresa).append(timestamp()+".db");
 
   string conf_usuarios;
   cout<<"\n\t¿Deseas generar una nueva planilla? [s/n]: "; cin>>conf_usuarios;
@@ -341,7 +341,7 @@ void crear_planilla (void) {
     if ( vector_usuarios[elemento] == "A" & vector_usuarios[elemento+5] == codigo_empresa ) {
       vector_usuarios[elemento] = "N";
       vector_usuarios[elemento+1] = "Normal";
-      vector_usuarios[elemento+4] = "";
+      vector_usuarios[elemento+4] = "Normal";
     }
   }
 
