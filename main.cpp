@@ -80,8 +80,8 @@ void obtener_empresas (void) {
 void obtener_usuarios (void) {
   ifstream usuarios; usuarios.open("./bases-datos/usuarios.db");
   if (!usuarios.is_open()) return;
-  vector_usuarios.clear();
 
+  vector_usuarios.clear();
   while (getline(usuarios, linea)) vector_usuarios.push_back(linea);
   usuarios.close();
 
@@ -176,6 +176,10 @@ void mostrar_planillas (void) {
     }
   }
   int numero_planilla = 0;
+  if ( it == 0 ) {
+    cout<<"\n\t!Esta empresa no tiene planillas!"<<endl;
+    return;
+  }
   it = 0;
   cout<<"Seleccione (1-): "; cin>>numero_planilla;
   for ( const auto &elemento : filesystem::directory_iterator(path) ) {
@@ -239,8 +243,8 @@ void actualizar_usuario (void) {
 
   int it = 0;
   bool us_val = false;
-  for (string elemento : vector_usuarios) {
-    if (elemento == codigo_usuario) {
+  for (it = 0; it<vector_usuarios.size(); it++) {
+    if (vector_usuarios[it] == codigo_usuario & vector_usuarios[it+8] == codigo_empresa) {
       us_val = !us_val;
       break;
     }
@@ -290,16 +294,20 @@ void actualizar_usuario (void) {
 }
 
 void generar_reporte (void) {
+  if (!vector_usuarios_empresa.size()) {
+    cout<<"\n\t!Esta empresa no tiene usuarios, asegurate de tener por lo menos 1 usuario para generar un reporte!"<<endl;
+    return;
+  }
   ifstream html; html.open("./static/template.html");
-  string nombre_reporte = "reporte";
-  nombre_reporte.append(timestamp()).append(".html");
+  string nombre_reporte;
+  nombre_reporte.append(codigo_empresa).append(timestamp()).append(".html");
   ofstream reporte; reporte.open("./reportes/"+nombre_reporte);
 
-  matriz_usuarios = vector_matriz(vector_usuarios, 9);
+  matriz_usuarios = vector_matriz(vector_usuarios_empresa, 9);
   while (getline(html, linea)) {
     reporte << linea << endl;
     if ( linea == "<tbody>" ) {
-      for ( int fila = 0; fila<vector_usuarios.size()/9; fila++ ) {
+      for ( int fila = 0; fila<vector_usuarios_empresa.size()/9; fila++ ) {
         string sueldo_ = *(*(matriz_usuarios+fila)+6);
         if ( sueldo_ != "-" ) {
           float sueldo = stof(sueldo_);
@@ -334,6 +342,10 @@ void crear_planilla (void) {
   string conf_usuarios;
   cout<<"\n\t¿Deseas generar una nueva planilla? [s/n]: "; cin>>conf_usuarios;
   if (conf_usuarios == "n") return;
+  if (!vector_usuarios_empresa.size()) {
+    cout<<"\n\t!Esta empresa no tiene usuarios, asegurate de tener por lo menos 1 usuario para generar una planilla!"<<endl;
+    return;
+  }
 
   ofstream planilla;
 
@@ -345,13 +357,17 @@ void crear_planilla (void) {
     }
   }
 
+  guardar_usuarios();
+  obtener_usuarios();
+
   planilla.open(nueva_planilla);
-  for ( auto elemento : vector_usuarios ) {
+  for ( auto elemento : vector_usuarios_empresa ) {
     planilla << elemento << endl;
   }
   planilla.close();
 
   guardar_usuarios();
+
 }
 
 int main () {
@@ -379,7 +395,14 @@ int main () {
 
     system("clear");
     if ( conf_opcion == 1 & codigo_empresa == "") buscar_empresa();
-    if ( conf_opcion == 1 & codigo_empresa != "") mostrar_matriz(matriz_usuarios_empresa, 9, vector_usuarios_empresa.size());
+    if ( conf_opcion == 1 & codigo_empresa != "") {
+      if (!vector_usuarios_empresa.size()) {
+        cout<<"\n\t!Esta empresa no tiene usuarios!"<<endl;
+      } else {
+        cout<<"\n\tUsuarios: "<<vector_usuarios_empresa.size()/9<<endl<<endl;;
+        mostrar_matriz(matriz_usuarios_empresa, 9, vector_usuarios_empresa.size());
+      }
+    }
     if ( conf_opcion == 2 & codigo_empresa == "") agregar_empresa ();
     if ( conf_opcion == 2 & codigo_empresa != "") crear_planilla();
     if ( conf_opcion == 3 & codigo_empresa != "") mostrar_planillas();
