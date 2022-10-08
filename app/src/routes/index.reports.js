@@ -2,14 +2,17 @@ const router = require("express").Router();
 const path = require("path");
 const fs = require("fs");
 
-async function getContentReports () {
+async function getContentReports (id) {
   const content = { reports: [] };
 
   const direntReports = await fs.promises.opendir(path.join(process.env.PATH_BASE, "reportes"));
 
   for await ( element of direntReports ) {
     if (!element.isDirectory()) {
-      content.reports.push(element.name.slice(0, -5));
+      let id_ = element.name.split("_")[0];
+      if (id_ == id) {
+        content.reports.push(element.name.slice(0, -5));
+      }
     }
   }
 
@@ -18,12 +21,17 @@ async function getContentReports () {
 }
 
 router.get("/reports", async (req, res) => {
-  const content = await getContentReports()
-  res.render("reports", { content });
+  res.render("reports");
 });
 
-router.get("/reports/name=:name", async (req, res) => {
-  const content = await getContentReports()
+router.get("/reports/:id", async (req, res) => {
+  const { id } = req. params;
+  const content = await getContentReports(id)
+  res.render("reports", { content, id})
+});
+
+router.get("/reports/:id/name=:name", async (req, res) => {
+  const content = await getContentReports(req.params.id)
   const { name } = req.params;
   let html = await fs.readFileSync(path.join(process.env.PATH_BASE, "reportes", name+".html"), "utf-8");
   html = html.toString()
@@ -48,8 +56,21 @@ router.get("/reports/name=:name", async (req, res) => {
     reports.push(report);
   }
 
-  res.render("reports", { content, reports, name });
+  res.render("reports", { content, reports, name, id: req.params.id });
 
+});
+
+router.post("/reports/company", async (req, res) => {
+  const { id_company } = req.body;
+  let companies = await fs.readFileSync(path.join(process.env.PATH_BASE, "bases-datos", "empresas.db"), "utf-8");
+  companies = companies.toString().replace(/(\n)/gm, "_").split("_").filter(Boolean);
+  for ( let it = 0; it<companies.length; it+=4 ) {
+    if ( id_company == companies[it] ) {
+      return res.redirect(`/reports/${id_company}`);
+      break;
+    }
+  }
+  return res.render("reports", { alert: "La empresa no existe" });
 });
 
 module.exports = router;

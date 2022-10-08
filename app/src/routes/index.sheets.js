@@ -2,14 +2,18 @@ const router = require("express").Router();
 const path = require("path");
 const fs = require("fs");
 
-async function getContentSheets () {
+async function getContentSheets (id) {
   let content = { sheets: [] }
 
   const direntSheets = await fs.promises.opendir(path.join(process.env.PATH_BASE, "planillas"));
 
   for await ( element of direntSheets ) {
     if (!element.isDirectory()) {
-      content.sheets.push(element.name.slice(0, -3));
+      let id_ = element.name.split("_")[0];
+      console.log(id_)
+      if (id_ == id) {
+        content.sheets.push(element.name.slice(0, -3));
+      }
     }
   }
   content.sheets.sort();
@@ -18,12 +22,17 @@ async function getContentSheets () {
 }
 
 router.get("/sheets", async (req, res) => {
-  const content = await getContentSheets();
-  res.render("sheets", { content });
+  res.render("sheets");
 });
 
-router.get("/sheets/name=:name", async (req, res) => {
-  const content = await getContentSheets();
+router.get("/sheets/:id", async (req, res) => {
+  const { id } = req. params;
+  const content = await getContentSheets(id)
+  res.render("sheets", { content, id})
+});
+
+router.get("/sheets/:id/name=:name", async (req, res) => {
+  const content = await getContentSheets(req.params.id);
   const { name } = req.params;
   let sheet = await fs.readFileSync(path.join(process.env.PATH_BASE, "planillas", name+".db"), "utf-8");
   sheet = sheet.toString()
@@ -44,7 +53,21 @@ router.get("/sheets/name=:name", async (req, res) => {
     newSheet.company = sheet[i+8];
     sheets.push(newSheet);
   }
-  res.render("sheets", { content, name, sheets })
+  res.render("sheets", { content, name, sheets, id: req.params.id })
 })
+
+router.post("/sheets/company", async (req, res) => {
+  const { id_company } = req.body;
+  let companies = await fs.readFileSync(path.join(process.env.PATH_BASE, "bases-datos", "empresas.db"), "utf-8");
+  companies = companies.toString().replace(/(\n)/gm, "_").split("_").filter(Boolean);
+  for ( let it = 0; it<companies.length; it+=4 ) {
+    console.log(companies[it])
+    if ( id_company == companies[it] ) {
+      return res.redirect(`/sheets/${id_company}`);
+      break;
+    }
+  }
+  return res.render("sheets", { alert: "La empresa no existe" });
+});
 
 module.exports = router;

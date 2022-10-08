@@ -7,13 +7,19 @@
   <div class="row">
     <div class="col-md-4">
       <div class="card bg-dark rounded-0 text-light">
+      <form action="/sheets/company" method="POST">
+        <div class="mb-3 d-flex">
+          <input type="text" name="id_company" class="m-1 form-control bg-dark rounded-0 text-light" value="{{id}}" placeholder="Código empresa" value="{{id}}"required>
+          <button class="btn btn-primary rounded-0 m-1">Buscar</button>
+        </div>
+      </form>
         <div class="card-header text-center">
           <h4>Planillas</h4>
         </div>
         <table class="table table-hover table-striped table-dark">
           {{#if content.sheets}}
             {{#each content.sheets}}
-              <tr onclick="location.href='/sheets/name={{this}}'">
+              <tr onclick="location.href='/sheets/{{../id}}/name={{this}}'">
                 <td>{{this}}</td>
               </tr>
             {{/each}}

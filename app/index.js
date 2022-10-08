@@ -17,6 +17,8 @@ app.engine(".hbs", exphbs.engine({
 }));
 app.set("view engine", ".hbs");
 
+app.use(express.urlencoded({ extended: false }));
+
 // routes
 app.use(require("./src/routes/index.router"));
 

@@ -6,6 +6,12 @@
   {{/if}}
   <div class="row">
     <div class="col-md-4">
+      <form action="/reports/company" method="POST">
+        <div class="mb-3 d-flex">
+          <input type="text" name="id_company" class="m-1 form-control bg-dark rounded-0 text-light" value="{{id}}" placeholder="Código empresa" required>
+          <button class="btn btn-primary rounded-0 m-1">Buscar</button>
+        </div>
+      </form>
       <div class="card bg-dark rounded-0 text-light">
         <div class="card-header text-center">
           <h4>Reportes</h4>
@@ -13,7 +19,7 @@
         <table class="table table-hover table-striped table-dark">
           {{#if content.reports}}
             {{#each content.reports}}
-              <tr onclick="location.href='/reports/name={{this}}'">
+              <tr onclick="location.href='/reports/{{../id}}/name={{this}}'">
                 <td>{{this}}</td>
               </tr>
             {{/each}}
