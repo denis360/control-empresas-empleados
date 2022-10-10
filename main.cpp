@@ -30,7 +30,7 @@ stringstream stime;
 
 #include "funciones.h"
 
-string timestamp_ () {
+string timestamp_ (void) {
   stime.str("");
   time_t end_time = time(nullptr);
   tm* now = localtime(&end_time);
@@ -40,12 +40,12 @@ string timestamp_ () {
   return stime.str();
 }
 
-string timestamp () {
+string timestamp (void) {
   stime.str("");
   time_t end_time = time(nullptr);
   tm* now = localtime(&end_time);
   char buffer[128];
-  strftime(buffer, sizeof(buffer), "_%d-%m-%Y_%H:%M:%S", now);
+  strftime(buffer, sizeof(buffer), "_%d-%b-%Y_%H:%M:%S", now);
   stime << buffer;
   return stime.str();
 }
@@ -217,6 +217,11 @@ void agregar_usuario (void) {
   cout<<"\n\tDescripción: Contratado"<<endl;
   cout<<"\n\tEmpresa: "<<codigo_empresa<<endl;
 
+  if (codigo == "" | nombre == "" | cargo == "" | sueldo == "") {
+    cout<<"\n\t!No se puede guardar porque no se llenaron campos!"<<endl;
+    return;
+  }
+
   vector_usuarios.push_back(codigo);
   vector_usuarios.push_back(nombre);
   vector_usuarios.push_back(cargo);
@@ -243,9 +248,9 @@ void actualizar_usuario (void) {
 
   int it = 0;
   bool us_val = false;
-  for (it = 0; it<vector_usuarios.size(); it++) {
+  for (it = 0; it<vector_usuarios.size(); it+=8) {
     if (vector_usuarios[it] == codigo_usuario & vector_usuarios[it+8] == codigo_empresa) {
-      us_val = !us_val;
+      us_val = true;
       break;
     }
     it++;
@@ -286,6 +291,11 @@ void actualizar_usuario (void) {
   }
 
   cout<<"\n\tEmpresa: "<<vector_usuarios[it+8]<<endl;
+
+  if (vector_usuarios[it+2] == "" | vector_usuarios[it+3] == "" | vector_usuarios[it+6] == "") {
+    cout<<"\n\t!No se puede actualizar porque no se llenaron campos!"<<endl;
+    return;
+  }
 
   guardar_usuarios();
 
@@ -384,14 +394,15 @@ int main () {
     cout<<(nombre_planilla != "" ? "\n\tPlanilla: "+nombre_planilla+"\n" : "");
 
     int conf_opcion = 0;
-    cout<<( codigo_empresa == "" ? "\n  1. Buscar empresa" : "\n  1. Mostrar usuarios emrpesa")<<endl;
+    cout<<( codigo_empresa == "" ? "\n  1. Buscar empresa" : "\n  1. Mostrar usuarios empresa")<<endl;
     cout<<( codigo_empresa == "" ? "  2. Registrar empresa" : "  2. Crear planilla")<<endl;
     cout<<( codigo_empresa == "" ? "  3. Salir" : "  3. Ver planillas")<<endl;
     cout<<( codigo_empresa == "" ? "" : ( nombre_planilla != "" ? "  4. Mostrar planilla\n" : ""));
     cout<<( codigo_empresa == "" ? "" : ( nombre_planilla != "" ? "  5. Registrar usuario\n" : "  4. Registrar usuario\n"));
     cout<<( codigo_empresa == "" ? "" : ( nombre_planilla != "" ? "  6. Actualizar usuario\n" : "  5. Actualizar usuario\n" ));
     cout<<( codigo_empresa == "" ? "" : ( nombre_planilla != "" ? "  7. Generar reporte\n" : "" ));
-    cout<<"Seleccione (1-): "; cin>>conf_opcion;
+    cout<<( codigo_empresa != "" ? ( nombre_planilla == "" ? "  6. Salir\n" : "  8. Salir\n" ) : "" );
+    cout<<"Seleccione (1-"<<(codigo_empresa != "" ? (nombre_planilla == "" ? "6" : "8") : "3")<<"): "; cin>>conf_opcion;
 
     system("clear");
     if ( conf_opcion == 1 & codigo_empresa == "") buscar_empresa();
@@ -403,10 +414,14 @@ int main () {
         mostrar_matriz(matriz_usuarios_empresa, 9, vector_usuarios_empresa.size());
       }
     }
-    if ( conf_opcion == 2 & codigo_empresa == "") agregar_empresa ();
-    if ( conf_opcion == 2 & codigo_empresa != "") crear_planilla();
-    if ( conf_opcion == 3 & codigo_empresa != "") mostrar_planillas();
-    if ( conf_opcion == 4 & codigo_empresa != "") mostrar_matriz(matriz_planilla, 9, vector_planilla.size());
+    if ( conf_opcion == 2 & codigo_empresa == "") 
+      agregar_empresa ();
+    if ( conf_opcion == 2 & codigo_empresa != "") 
+      crear_planilla();
+    if ( conf_opcion == 3 & codigo_empresa != "") 
+      mostrar_planillas();
+    if ( conf_opcion == 4 & codigo_empresa != "") 
+      mostrar_matriz(matriz_planilla, 9, vector_planilla.size());
 
     if ((conf_opcion == 5 & codigo_empresa != "" & nombre_planilla != "") |
         (conf_opcion == 4 & nombre_planilla == ""))
@@ -418,6 +433,13 @@ int main () {
 
     if ( conf_opcion == 7 & codigo_empresa != "") generar_reporte();
 
+    if ((conf_opcion == 3 & codigo_empresa == "" & nombre_planilla == "") |
+        (conf_opcion == 6 & codigo_empresa != "" & nombre_planilla == "") |
+        (conf_opcion == 8 & codigo_empresa != "" & nombre_planilla != "")) 
+    {
+      cout<<"\n\t!Gracias! Vuelva pronto."<<endl;  
+      conf = false;    
+    }
   }
 
   return 0;

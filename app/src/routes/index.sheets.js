@@ -10,9 +10,8 @@ async function getContentSheets (id) {
   for await ( element of direntSheets ) {
     if (!element.isDirectory()) {
       let id_ = element.name.split("_")[0];
-      console.log(id_)
       if (id_ == id) {
-        content.sheets.push(element.name.slice(0, -3));
+        content.sheets.push(element.name.slice(0, -3).slice(id.length+1, this.length));
       }
     }
   }
@@ -61,7 +60,6 @@ router.post("/sheets/company", async (req, res) => {
   let companies = await fs.readFileSync(path.join(process.env.PATH_BASE, "bases-datos", "empresas.db"), "utf-8");
   companies = companies.toString().replace(/(\n)/gm, "_").split("_").filter(Boolean);
   for ( let it = 0; it<companies.length; it+=4 ) {
-    console.log(companies[it])
     if ( id_company == companies[it] ) {
       return res.redirect(`/sheets/${id_company}`);
       break;

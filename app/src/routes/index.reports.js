@@ -11,7 +11,7 @@ async function getContentReports (id) {
     if (!element.isDirectory()) {
       let id_ = element.name.split("_")[0];
       if (id_ == id) {
-        content.reports.push(element.name.slice(0, -5));
+        content.reports.push(element.name.slice(0, -5).slice(id.length+1, this.length));
       }
     }
   }

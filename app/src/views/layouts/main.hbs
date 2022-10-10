@@ -7,10 +7,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Reportes | Planillas</title>
 </head>
-<body style="background: #1E2127; overflow-x: hidden;">
+<body style="background: #212529; overflow-x: hidden;">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand">Control</a>
+      <a class="navbar-brand">
+        {{#if id}}
+          Control Empresa: {{id}}
+        {{else}}
+          Control Empresas {{id}}
+        {{/if}}
+      </a>
       <form class="d-flex">
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
