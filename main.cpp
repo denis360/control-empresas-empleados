@@ -135,7 +135,6 @@ void buscar_empresa (void) {
       }
       cout<<endl;
       return;
-      break;
     }
   }
   cout<<"\n\t!No se encontro la empresa!"<<endl;
@@ -263,8 +262,8 @@ void actualizar_usuario (void) {
 
   cout<<"\n\tCódigo: "<<vector_usuarios[it]<<endl<<endl;
   cout<<"\tNombre: "<<vector_usuarios[it+1]<<endl;
-  cin.ignore(); cout<<"\n\tCargo: "; getline(cin, vector_usuarios[it+2]);
-  cin.ignore(); cout<<"\tStatus: "; getline(cin, vector_usuarios[it+3]);
+  cin.ignore(); cout<<"\n\tCargo: "; getline (cin, vector_usuarios[it+2]);
+  cin.ignore(); cout<<"\tStatus: "; getline (cin, vector_usuarios[it+3]);
 
   if (vector_usuarios[it+3] == "S") {
     vector_usuarios[it+4] = "Suspendido";
@@ -330,6 +329,7 @@ void generar_reporte (void) {
           }
         }
         if (*(*(matriz_usuarios+fila)+3) == "S") {
+          reporte << "<tr scope='row'>" << endl;
           for ( int fc = 0; fc<9; fc++ ) {
             reporte << "<td scope='col'>" << *(*(matriz_usuarios+fila)+fc) << "</td>" << endl;
           }
@@ -370,14 +370,31 @@ void crear_planilla (void) {
   guardar_usuarios();
   obtener_usuarios();
 
-  planilla.open(nueva_planilla);
+  bool espacios = false;
+
   for ( auto elemento : vector_usuarios_empresa ) {
-    planilla << elemento << endl;
+    if ( elemento == "" ) {
+      cout<<"\n\tSe generó un error al intentar crear planilla!"<<endl;
+      cout<<"\t  1. Verifica la información."<<endl;
+      cout<<"\t  2. Algún campo está en blanco."<<endl;
+      cout<<"\n\t!Si tiene errores no se generara la planilla!"<<endl;
+      espacios = true;
+      break;
+    }
   }
-  planilla.close();
 
-  guardar_usuarios();
+  if (!espacios) {
+    planilla.open(nueva_planilla);
 
+    for ( auto elemento : vector_usuarios_empresa ) {
+      planilla << elemento << endl;
+    }
+
+    planilla.close();
+    guardar_usuarios();
+
+    cout<<"\n\t!Se genero la planilla satisfactoriamente!"<<endl;
+  }
 }
 
 int main () {
@@ -414,13 +431,13 @@ int main () {
         mostrar_matriz(matriz_usuarios_empresa, 9, vector_usuarios_empresa.size());
       }
     }
-    if ( conf_opcion == 2 & codigo_empresa == "") 
-      agregar_empresa ();
-    if ( conf_opcion == 2 & codigo_empresa != "") 
-      crear_planilla();
-    if ( conf_opcion == 3 & codigo_empresa != "") 
-      mostrar_planillas();
-    if ( conf_opcion == 4 & codigo_empresa != "") 
+    if ( conf_opcion == 2 & codigo_empresa == "") agregar_empresa();
+
+    if ( conf_opcion == 2 & codigo_empresa != "") crear_planilla();
+
+    if ( conf_opcion == 3 & codigo_empresa != "") mostrar_planillas();
+
+    if ( conf_opcion == 4 & codigo_empresa != "")
       mostrar_matriz(matriz_planilla, 9, vector_planilla.size());
 
     if ((conf_opcion == 5 & codigo_empresa != "" & nombre_planilla != "") |
@@ -431,14 +448,14 @@ int main () {
         (conf_opcion == 5 & nombre_planilla == ""))
       actualizar_usuario();
 
-    if ( conf_opcion == 7 & codigo_empresa != "") generar_reporte();
+    if ( conf_opcion == 7 & codigo_empresa != "") generar_reporte ();
 
     if ((conf_opcion == 3 & codigo_empresa == "" & nombre_planilla == "") |
         (conf_opcion == 6 & codigo_empresa != "" & nombre_planilla == "") |
-        (conf_opcion == 8 & codigo_empresa != "" & nombre_planilla != "")) 
+        (conf_opcion == 8 & codigo_empresa != "" & nombre_planilla != ""))
     {
-      cout<<"\n\t!Gracias! Vuelva pronto."<<endl;  
-      conf = false;    
+      cout<<"\n\t!Gracias! Vuelva pronto."<<endl;
+      conf = false;
     }
   }
 
