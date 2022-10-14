@@ -1,4 +1,3 @@
-import Reports from "./controllers/reports.js";
 import Sheets from "./controllers/sheets.js";
 import Filter from "./controllers/filter.js";
 
@@ -43,7 +42,7 @@ export default class Model {
 
   filter (filters) {
     const { type } = filters;
-    for ( let row of this.table.children ) {
+    for ( const row of this.table.children ) {
       const [, , , status, , , salary] = row.children;
       let shouldHide = false;
 
@@ -67,7 +66,7 @@ export default class Model {
   
   searchId (id) {
     const table = document.getElementById("c-table-select").children;
-     for (let row of table) {
+     for ( const row of table ) {
       if (id.length < 8) return;
       const [ name ] = row.children;
       if (name.innerText.split("_")[0] == id) {

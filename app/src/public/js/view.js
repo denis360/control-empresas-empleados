@@ -2,9 +2,7 @@ export default class View {
   constructor () {
     this.reports = null;
     this.sheets = null;
-    this.btn = document.getElementById("home");
     this.containerTable = document.getElementById("c-table");
-    this.btn.onclick = () => this.tablesHideShow();
   }
 
   async getReports () {
@@ -25,6 +23,6 @@ export default class View {
 
   tablesHideShow () {
     document.getElementById("c-home").classList.remove("d-none");
-    this.containerTable.add("d-none");
+    this.containerTable.classList.add("d-none");
   }
 }

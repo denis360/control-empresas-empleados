@@ -2,7 +2,7 @@ export default class Sheets {
   constructor (view, model) {
     this.view = view;
     this.model = model;
-    this.btn = document.getElementById("sheets");
+    this.btn = document.querySelector("#sheets");
     this.containerHome = document.getElementById("c-home");
     this.containerTable = document.getElementById("c-table");
     this.panel = document.getElementById("c-table-select");
@@ -22,6 +22,7 @@ export default class Sheets {
   }
 
   showPanelToSelect (object) {
+    document.getElementById("tag").innerText = "Planillas";
     this.model.clearTable();
     const table = document.getElementById("c-table-select");
     if ( table.children.length > 0 ) {

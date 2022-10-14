@@ -14,10 +14,13 @@ window.addEventListener("DOMContentLoaded", async () => {
   model.setReports(reports);
   model.setSheets(sheets);
 
-  reports.onClick((bool) => reports.driveTable(true));
-  sheets.onClick((bool) => sheets.driveTable(true));
+  reports.onClick(() => reports.driveTable(true));
+  sheets.onClick(() => sheets.driveTable(true));
 
   document.querySelector("#id").oninput = (e) => model.searchId(e.target.value);
+  const btnhome = document.getElementById("home");
+  btnhome.onclick = () => view.tablesHideShow();
+
 
   view.reports = await view.getReports();
   view.sheets = await view.getSheets();
