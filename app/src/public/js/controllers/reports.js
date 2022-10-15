@@ -39,7 +39,6 @@ export default class Reports {
   createRowPanel (element, id) {
     const row = this.panel.insertRow();
     row.setAttribute("id", id);
-    row.classList.add("d-none");
     row.innerHTML = `
       <td>${element}</td>
     `;
@@ -49,6 +48,7 @@ export default class Reports {
   onClick (callback) {
     this.btn.onclick = () => {
       document.getElementById("filters").classList.remove("d-none");
+      document.getElementById("input-id").classList.add("d-none");
       document.getElementById("id").value = "";
       callback(true);
     }

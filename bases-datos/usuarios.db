@@ -8,16 +8,16 @@ Conn sueldo
 Normal
 0-2207-4
 1-2207-2207
-Mario Rafael
-Contador
-N
-Normal
-Con sueldo
-5000.00
-Normal
+Mario
+Mantenimiento
+S
+Suspendido
+Sin sueldo
+-
+Suspendido por el igss
 0-2207-4
 2-2207-2207
-Ramon Montenegro
+Ramon
 Limpieza
 N
 Normal
@@ -37,11 +37,11 @@ Normal
 4-2207-2207
 Maria
 Desarrollo web
-N
-Normal
-Con sueldo
+B
+Baja
+Sin sueldo
 5700.00
-Normal
+Despedido/Renuncia
 0-2207-4
 5-2207-2207
 Pablo
@@ -89,11 +89,146 @@ Con sueldo
 Normal
 1-2208-4
 4-2207-2208
-Luigui
-Super
+Patricia
+Mantenimiento
+S
+Suspendido
+Sin sueldo
+-
+Suspendido por el igss
+1-2208-4
+6-2214-2207
+Annie
+Administracion
 N
 Normal
 Con sueldo
-4700.00
+2500.00
+Normal
+0-2207-4
+7-2214-2207
+Kenia
+Encargada administracion
+N
+Normal
+Con sueldo
+3400.00
+Normal
+0-2207-4
+8-2214-2207
+Alexander
+Asistente TI
+N
+Normal
+Con sueldo
+4000.00
+Normal
+0-2207-4
+9-2214-2207
+Jeff
+Desarrollo web
+S
+Suspendido
+Sin sueldo
+-
+Suspendido por el igss
+0-2207-4
+5-2214-2208
+Milton
+Seguridad
+A
+Alto
+Con sueldo
+4600.00
+Contratado
+1-2208-4
+6-2214-2208
+Gabriela
+Asistente TI
+B
+Baja
+Sin sueldo
+6300.00
+Despedido/Renuncia
+1-2208-4
+7-2214-2208
+Luis
+Supervisor
+A
+Alto
+Con sueldo
+4600.00
+Contratado
+1-2208-4
+8-2214-2208
+Nanci
+Supervisora
+N
+Normal
+Con sueldo
+6500.00
 Normal
 1-2208-4
+9-2214-2208
+Ricardo
+Seguridad
+A
+Alto
+Con sueldo
+4600.00
+Contratado
+1-2208-4
+0-2214-2214
+Carol
+Mantenimiento
+B
+Baja
+Sin sueldo
+2300.00
+Despedido/Renuncia
+3-2214-12
+1-2214-2214
+Michael
+Marketing Digital
+A
+Alto
+Con sueldo
+4600.00
+Contratado
+3-2214-12
+2-2214-2214
+Miguel
+Director Ejecutivo
+S
+Suspendido
+Sin sueldo
+-
+Suspendido por el igss
+3-2214-12
+3-2214-2214
+Mike
+Recursos Humanos
+A
+Alto
+Con sueldo
+5700.00
+Contratado
+3-2214-12
+4-2214-2214
+Alejandro
+Supervisor
+N
+Normal
+Con sueldo
+2600.00
+Normal
+3-2214-12
+0-2214-2214
+Pablo
+Desarrollador
+A
+Alto
+Con sueldo
+4660.00
+Contratado
+2-2214-8

@@ -47,8 +47,9 @@ export default class Sheets {
   }
   
   onClick (callback) {
-    this.btn.onclick = (e) => {
+    this.btn.onclick = () => {
       document.getElementById("filters").classList.add("d-none");
+      document.getElementById("input-id").classList.remove("d-none");
       document.getElementById("id").value = "";
       callback(true);
     }

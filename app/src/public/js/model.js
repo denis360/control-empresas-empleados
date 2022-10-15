@@ -49,13 +49,16 @@ export default class Model {
       if ( type === "suspends" && status.innerText !== "S" ) {
         shouldHide = true;
       }
-
+      
       if ( type === "minSalary" && Number(salary.innerText) > 2500 ) {
+        console.log(status)
         shouldHide = true;
       }
+
       if ( type === "maxSalary" && Number(salary.innerText) < 3000 ) {
         shouldHide = true;
       }
+
       if (shouldHide) {
         row.classList.add("d-none");
       } else {
